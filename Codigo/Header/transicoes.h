@@ -1,17 +1,31 @@
-/* ------------------------------------------------------------- */
-/*                     ARQUIVO: transicoes.h                     */
-/* ------------------------------------------------------------- */
-
 #ifndef _TRANSICOES_H //Carregar somente uma vez na memória
 #define _TRANSICOES_H
+
+/*
+*---------------------------------------------------------------------
+*   INCLUDE FILES
+*---------------------------------------------------------------------
+*/
+
 
 #include <ctype.h>
 #include <stdio.h>
 
 
+/*
+*-----------------------------------------------------------------------
+*   Macros
+*-----------------------------------------------------------------------
+*/
 
 #define TOTAL_ESTADOS  44
 #define TAM_ALFABETO 21
+
+/*
+*-----------------------------------------------------------------------
+*   Data types and global variables
+*-----------------------------------------------------------------------
+*/
 
 //Tipo Alfabeto
 typedef enum
@@ -39,11 +53,10 @@ typedef enum
     c_pt        // 20
 } tAlfabeto;
 
-//Prototipos
-tAlfabeto charToAlfabeto (char *lex);
-
 //Tabela de transição de estados
-unsigned int tabela_transicao[TOTAL_ESTADOS][TAM_ALFABETO] = {
+
+unsigned int tabela_transicao[TOTAL_ESTADOS][TAM_ALFABETO] = 
+{
 //   D | L | S | O | " | < | > | + | - | = | * | ; | , | : | ) | ( | / |EOF|\n |\b |. 
     { 7,  2, 40, 40, 15, 25, 29, 34, 37, 32, 33, 19, 18, 20, 24, 23, 4, 1, 40, 40, 13}, // Q0
     { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, // Q1
@@ -91,7 +104,21 @@ unsigned int tabela_transicao[TOTAL_ESTADOS][TAM_ALFABETO] = {
     { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, // Q43
 };
 
-//Converte um caractere em um tipo Alfabeto
+/*
+*-----------------------------------------------------------------------
+*   Signatures
+*-----------------------------------------------------------------------
+*/
+
+tAlfabeto charToAlfabeto (char *lex);
+
+/*
+*-----------------------------------------------------------------------
+*   Functions
+*-----------------------------------------------------------------------
+*/
+
+/* Converte um caractere em um tipo Alfabeto */
 tAlfabeto charToAlfabeto (char *lex)
 {
     if (isalpha(*lex))	return c_letra;
