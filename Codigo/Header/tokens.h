@@ -92,7 +92,7 @@ typedef struct
 
 
 //Lista de Tokens Encontrados
-tListaTokenEncontrados tkEncontrados;
+tListaTokenEncontrados lista_tkEncontrados;
 
 /*
 *-----------------------------------------------------------------------
@@ -163,10 +163,10 @@ char * tokenGetText(tToken tk)
 /* Aloca lista de tokens encontrados */
 void alocarListaTkEncontrados (void) 
 {
-    tkEncontrados.tamanhoLimite = TAM_LIM_INI_LIST_TK;
-    tkEncontrados.tamanhoAtual = 0;
-    tkEncontrados.lista = (tTokenEncontrado *) malloc(TAM_LIM_INI_LIST_TK * sizeof(tTokenEncontrado));
-    if(tkEncontrados.lista == NULL)
+    lista_tkEncontrados.tamanhoLimite = TAM_LIM_INI_LIST_TK;
+    lista_tkEncontrados.tamanhoAtual = 0;
+    lista_tkEncontrados.lista = (tTokenEncontrado *) malloc(TAM_LIM_INI_LIST_TK * sizeof(tTokenEncontrado));
+    if(lista_tkEncontrados.lista == NULL)
     {
         printf("Erro ao alocar espaco para a lista de tokens encontrados");
         exit(-1);
@@ -176,27 +176,27 @@ void alocarListaTkEncontrados (void)
 /* Adiciona novo token encontrado na lista de tokens encontrados, caso já esteja cheia, realoca mais espaço */
 void addTkListaEncontrados (tToken tk, int lin, int col, int hash)
 {
-    if(tkEncontrados.tamanhoAtual + 1 == tkEncontrados.tamanhoLimite)
+    if(lista_tkEncontrados.tamanhoAtual + 1 == lista_tkEncontrados.tamanhoLimite)
     {
-        tkEncontrados.tamanhoLimite *= 2;
-        tkEncontrados.lista = (tTokenEncontrado *) realloc(tkEncontrados.lista, tkEncontrados.tamanhoLimite * sizeof(tTokenEncontrado));
-        if(tkEncontrados.lista == NULL)
+        lista_tkEncontrados.tamanhoLimite *= 2;
+        lista_tkEncontrados.lista = (tTokenEncontrado *) realloc(lista_tkEncontrados.lista, lista_tkEncontrados.tamanhoLimite * sizeof(tTokenEncontrado));
+        if(lista_tkEncontrados.lista == NULL)
         {
             printf("Erro ao realocar espaco para a lista de tokens encontrados");
             exit(-1);
         }
     }
-    tkEncontrados.lista[tkEncontrados.tamanhoAtual].tk = tk;
-    tkEncontrados.lista[tkEncontrados.tamanhoAtual].lin = lin;
-    tkEncontrados.lista[tkEncontrados.tamanhoAtual].col = col;
-    tkEncontrados.lista[tkEncontrados.tamanhoAtual].hashTabSimb = hash;
-    tkEncontrados.tamanhoAtual++;
+    lista_tkEncontrados.lista[lista_tkEncontrados.tamanhoAtual].tk = tk;
+    lista_tkEncontrados.lista[lista_tkEncontrados.tamanhoAtual].lin = lin;
+    lista_tkEncontrados.lista[lista_tkEncontrados.tamanhoAtual].col = col;
+    lista_tkEncontrados.lista[lista_tkEncontrados.tamanhoAtual].hashTabSimb = hash;
+    lista_tkEncontrados.tamanhoAtual++;
 }
 
 /* Libera a lista de tokens encontrados da memória */
 void liberarListaTkEncontrados (void)
 {
-    free(tkEncontrados.lista);
+    free(lista_tkEncontrados.lista);
 }
 
 #endif

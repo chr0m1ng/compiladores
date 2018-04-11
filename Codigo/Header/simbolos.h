@@ -17,7 +17,7 @@
 *-----------------------------------------------------------------------
 */
 
-#define TAM_TAB_SIMB 255 
+#define TAM_TAB_SIMB 127 
 
 /*
 *-----------------------------------------------------------------------
@@ -41,7 +41,7 @@ typedef struct ttSimbolo {
     float lex_dec;
 
     tPos * ocor;
-
+    tPos * ocorTail;
     struct ttSimbolo * prox; 
 } tSimbolo;
 
@@ -56,6 +56,7 @@ tSimbolo ** tabela_simbolos;
 int hash (char *);
 void alocarTabSimb (void);
 void alocarOcorNoSimb (tSimbolo *, int, int);
+void liberarOcorNoSimb(tSimbolo *);
 tSimbolo * isSimbNaTab (char *);
 void addSimbNaTab (tToken, char *, int, int);
 void liberarTabSimb (void);
@@ -66,10 +67,20 @@ void liberarTabSimb (void);
 *-----------------------------------------------------------------------
 */
 
-/* Cria hash do lexema para posicionar simbolo na tabela */
+/* Cria hash com shift e compressão MAD do lexema para posicionar simbolo na tabela */
 int hash (char *lex)
 {
-    return 0;
+    int i;
+    unsigned int lex_hash = 0;
+    size_t lex_size = strlen(lex);
+
+    for(i = 0; i < lex_size; i++)
+    {
+        lex_hash += lex[i];
+        lex_hash <<= 3;
+    }
+
+    return ((lex_hash * 3) + 2) % TAM_TAB_SIMB;
 }
 
 /* Aloca espaço para a tabela de simbolos e inicializa os ponteiros como NULL */
@@ -89,16 +100,25 @@ void alocarTabSimb (void)
 }
 
 /* Aloca uma nova ocorrencia na lista de ocorrencias do simbolo  */
-void alocarOcorNoSimb (tSimbolo *simb, int lin. int col)
+void alocarOcorNoSimb (tSimbolo *simb, int lin, int col)
 {
     tPos *novaPos;
-    novaPos = (tPos) malloc(sizeof(tPos));
+    novaPos = (tPos *) malloc(sizeof(tPos));
 
     novaPos->lin = lin;
     novaPos->col = col;
 
-    novaPos->prox = simb->ocor;
-    simb->ocor = novaPos;
+    novaPos->prox = NULL;
+    if(simb->ocor == NULL)
+    {
+        simb->ocor = novaPos;
+        simb->ocorTail = novaPos;
+    }
+    else
+    {
+        simb->ocorTail->prox = novaPos;
+        simb->ocorTail = simb->ocorTail->prox;
+    }
 }
 
 /* Verifica se lexema já esta instalado na tabela de simbolos. Caso SIM retorna o simbolo, caso NÃO retorna NULL */
@@ -116,34 +136,68 @@ tSimbolo * isSimbNaTab (char *lex)
     return NULL;
 }
 
-void addSimbNaTab (tToken tk, char *lex, int lin, int col)
+/* Instala um simbolo na tabela de simbolos. Caso já exista o simbolo, adiciona somente uma nova ocorrencia. */
+void addSimbNaTab (tToken tk, char * lex, int lin, int col)
 {
     tSimbolo * novoSimb;
     int pos = hash(lex);
     novoSimb = isSimbNaTab(lex);
+
     if(novoSimb != NULL)
     {
         alocarOcorNoSimb(novoSimb, lin, col);
     }
     else
     {
-        novoSimb = (tSimbolo) malloc(sizeof(tSimbolo));
-
+        novoSimb = (tSimbolo *) malloc(sizeof(tSimbolo));
+        novoSimb->lex_char = (char *) malloc(sizeof(char));
         strcpy(novoSimb->lex_char, lex);
-
+        
         if(tk == TK_INT)
             novoSimb->lex_int = atoi(lex);
         else if(tk == TK_DEC)
             novoSimb->lex_dec = atof(lex);
 
         alocarOcorNoSimb(novoSimb, lin, col);
-
+        
         novoSimb->prox = tabela_simbolos[pos];
-        tabela_simbolos[pos] = novoSimb;
+        tabela_simbolos[pos] = novoSimb; 
+    }
+}
+
+/* Libera espaço alocado para as ocorrencias em um simbolo */
+void liberarOcorNoSimb (tSimbolo * simb)
+{
+    tPos *aux1, *aux2;
+    aux1 = simb->ocor;
+
+    while(aux1 != NULL)
+    {
+        aux2 = aux1;
+        aux1 = aux1->prox;
+        free(aux2);
+    }
+}
+
+/* Libera espaço alocado para a tabela de simbolos */
+void liberarTabSimb (void)
+{
+    int i;    
+    tSimbolo *aux1, *aux2;
+
+    for(i = 0; i < TAM_TAB_SIMB; i++)
+    {
+        aux1 = tabela_simbolos[i];
+        while(aux1 != NULL)
+        {
+            liberarOcorNoSimb(aux1);
+            aux2 = aux1;
+            aux1 = aux1->prox;
+            free(aux2);
+        }
     }
 
-//FALTA TESTAR TUDO DESTE ARQUIVO
-
+    free(tabela_simbolos);
 }
 
 #endif
