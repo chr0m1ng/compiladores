@@ -1,6 +1,7 @@
 #ifndef _LEXEMA_H //Carregar somente uma vez na memória
 #define _LEXEMA_H
 
+
 /*
 *---------------------------------------------------------------------
 *   INCLUDE FILES
@@ -23,6 +24,7 @@
 *   Data types and global variables
 *-----------------------------------------------------------------------
 */
+
 
 //Tipo Lexema
 typedef struct {

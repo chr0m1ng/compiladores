@@ -111,6 +111,7 @@ void liberarListaTkEncontrados (void);
 *-----------------------------------------------------------------------
 */
 
+/* Recebe um token enum e retorna o texto desse token */
 char * tokenGetText(tToken tk)
 {
     char * tokensText[] = {
