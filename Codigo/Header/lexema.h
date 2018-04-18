@@ -44,6 +44,7 @@ tLexema lexema_atual;
 void alocarLexema (void);
 void addCharNoLexema (char);
 void zerarLexema (void);
+char * encontraLexNaTabSimb (int, int, int);
 void liberarLexema (void);
 
 /*

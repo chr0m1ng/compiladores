@@ -41,11 +41,12 @@ typedef struct ttSimbolo {
     float lex_dec;
 
     tPos * ocor;
-    tPos * ocorTail;
+    // tPos * ocorTail;
     struct ttSimbolo * prox; 
 } tSimbolo;
 
 tSimbolo ** tabela_simbolos;
+int maiorQtdeOcorSimb = 0;
 
 /*
 *-----------------------------------------------------------------------
@@ -57,8 +58,9 @@ int hash (char *);
 void alocarTabSimb (void);
 void alocarOcorNoSimb (tSimbolo *, int, int);
 void liberarOcorNoSimb(tSimbolo *);
-tSimbolo * isSimbNaTab (char *);
-void addSimbNaTab (tToken, char *, int, int);
+tSimbolo * isSimbNaTab (char *, int *, int *);
+int addSimbNaTab (tToken, char *, int, int);
+tSimbolo * getSimbNaTab (int, int);
 void liberarTabSimb (void);
 
 /*
@@ -102,7 +104,8 @@ void alocarTabSimb (void)
 /* Aloca uma nova ocorrencia na lista de ocorrencias do simbolo  */
 void alocarOcorNoSimb (tSimbolo *simb, int lin, int col)
 {
-    tPos *novaPos;
+    tPos *novaPos, *aux;
+    int i = 1;
     novaPos = (tPos *) malloc(sizeof(tPos));
 
     novaPos->lin = lin;
@@ -112,56 +115,107 @@ void alocarOcorNoSimb (tSimbolo *simb, int lin, int col)
     if(simb->ocor == NULL)
     {
         simb->ocor = novaPos;
-        simb->ocorTail = novaPos;
+        if(maiorQtdeOcorSimb == 0)
+            maiorQtdeOcorSimb = i;
     }
     else
     {
-        simb->ocorTail->prox = novaPos;
-        simb->ocorTail = simb->ocorTail->prox;
+        aux = simb->ocor;
+        while(aux->prox != NULL)
+        {
+            aux = aux->prox;
+            i++;
+        }
+        aux->prox = novaPos;
+        i++;
+        if(maiorQtdeOcorSimb < i)
+            maiorQtdeOcorSimb = i;
     }
 }
 
-/* Verifica se lexema já esta instalado na tabela de simbolos. Caso SIM retorna o simbolo, caso NÃO retorna NULL */
-tSimbolo * isSimbNaTab (char *lex)
-{
-    int pos = hash(lex);
+/* Verifica se lexema já esta instalado na tabela de simbolos. Caso SIM retorna o simbolo e seta variavel 
+pos com a localização, caso NÃO retorna o ultimo simbolo da lista, seta pos como -1 e seta pos do ultimo simbolo */
+tSimbolo * isSimbNaTab (char *lex, int *pos, int *posUltimoSimbolo)
+{   
+    *pos = 0;
+    *posUltimoSimbolo = 0;
+    int posHash = hash(lex);
     tSimbolo *aux = NULL;
-    aux = tabela_simbolos[pos];
+    aux = tabela_simbolos[posHash];
     while(aux != NULL)
     {
         if(!strcmp(aux->lex_char, lex))
+            return aux;
+        if(aux->prox == NULL)
+        {
+            *posUltimoSimbolo = *pos;
+            *pos = -1;
+            return aux;
+        }
+        aux = aux->prox;
+        *pos++;
+    }
+    if(*pos == 0)
+        *pos = -1;
+    return NULL;
+}
+
+/* retorna simbolo da tabela de simbolos dada a posição dele. Caso posição incorreta retorna NULL */
+tSimbolo * getSimbNaTab (int posHash, int pos)
+{   
+    int i;
+    tSimbolo *aux = NULL;
+    aux = tabela_simbolos[posHash];
+    for(i = 0; aux != NULL; i++)
+    {
+        if(i == pos)
             return aux;
         aux = aux->prox;
     }
     return NULL;
 }
 
-/* Instala um simbolo na tabela de simbolos. Caso já exista o simbolo, adiciona somente uma nova ocorrencia. */
-void addSimbNaTab (tToken tk, char * lex, int lin, int col)
+/* Instala um simbolo na tabela de simbolos. Caso já exista o simbolo, 
+adiciona somente uma nova ocorrencia. caso seja um novo simbolo retorna pos na tabela de simbolo, caso contrario retorna -1 */
+int addSimbNaTab (tToken tk, char * lex, int lin, int col)
 {
     tSimbolo * novoSimb;
-    int pos = hash(lex);
-    novoSimb = isSimbNaTab(lex);
+    int posUltimoSimbolo;
+    int posHash = hash(lex);
+    int pos = 0;
+    tSimbolo * ultimoSimbolo = isSimbNaTab(lex, &pos, &posUltimoSimbolo);
 
-    if(novoSimb != NULL)
+    if(pos != -1)
     {
-        alocarOcorNoSimb(novoSimb, lin, col);
+        alocarOcorNoSimb (ultimoSimbolo, lin, col);
+        return -1;
     }
     else
     {
+        pos = 0;
         novoSimb = (tSimbolo *) malloc(sizeof(tSimbolo));
         novoSimb->lex_char = (char *) malloc(sizeof(char));
+
         strcpy(novoSimb->lex_char, lex);
-        
+
         if(tk == TK_INT)
             novoSimb->lex_int = atoi(lex);
         else if(tk == TK_DEC)
             novoSimb->lex_dec = atof(lex);
 
         alocarOcorNoSimb(novoSimb, lin, col);
+        novoSimb->prox = NULL;
         
-        novoSimb->prox = tabela_simbolos[pos];
-        tabela_simbolos[pos] = novoSimb; 
+        // printf("pos ultimo simbolo: %d\n", posUltimoSimbolo);
+        
+        if(ultimoSimbolo == NULL)
+        {
+            tabela_simbolos[posHash] = novoSimb;
+            return 0;   
+        }
+
+        ultimoSimbolo->prox = novoSimb; 
+        return ++posUltimoSimbolo;
     }
 }
 

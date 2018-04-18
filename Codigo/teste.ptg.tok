@@ -1,0 +1,64 @@
+LISTA DE TOKENS RECONHECIDOS EM "teste.ptg.tok"
+
++-----+-----+-----+------------------+---------+----------------+
+| LIN | COL | COD | TOKEN            | LEXEMA  |  POS TAB SIMB  |
++-----+-----+-----+------------------+---------+----------------+
+|   0 |   1 |  27 | TK_FIM_PROGRAMA  | adeshow |       118      |
+|     |   3 |   1 | TK_IDEN          | teste   |        21      |
+|   1 |   3 |   3 | TK_DEC           | 2.3     |       117      |
+|   2 |   3 |  18 | TK_ATRIB         |         |                |
++-----+-----+-----+------------------+---------+----------------+
+
+
+RESUMO
+
++-----+------------------+------+
+| COD | TOKEN            | USOS |
++-----+------------------+------+
+|   0 | TK_EOF           |    0 |
+|   1 | TK_IDEN          |    1 |
+|   2 | TK_INT           |    0 |
+|   3 | TK_DEC           |    1 |
+|   4 | TK_CADEIA        |    0 |
+|   5 | TK_VIRG          |    0 |
+|   6 | TK_PT_VIRG       |    0 |
+|   7 | TK_DOIS_PTS      |    0 |
+|   8 | TK_ABRE_PAR      |    0 |
+|   9 | TK_FECHA_PAR     |    0 |
+|  10 | TK_MENOR         |    0 |
+|  11 | TK_MENOR_IGUAL   |    0 |
+|  12 | TK_MAIOR         |    0 |
+|  13 | TK_MAIOR_IGUAL   |    0 |
+|  14 | TK_DIFERENTE     |    0 |
+|  15 | TK_IGUAL         |    0 |
+|  16 | TK_INCR          |    0 |
+|  17 | TK_DECR          |    0 |
+|  18 | TK_ATRIB         |    1 |
+|  19 | TK_MAIS          |    0 |
+|  20 | TK_MENOS         |    0 |
+|  21 | TK_VEZES         |    0 |
+|  22 | TK_DIVIDIDO      |    0 |
+|  23 | TK_NAO           |    0 |
+|  24 | TK_E             |    0 |
+|  25 | TK_OU            |    0 |
+|  26 | TK_PROGRAMA      |    0 |
+|  27 | TK_FIM_PROGRAMA  |    1 |
+|  28 | TK_INTEIRO       |    0 |
+|  29 | TK_DECIMAL       |    0 |
+|  30 | TK_CASO          |    0 |
+|  31 | TK_ENTAO         |    0 |
+|  32 | TK_SENAO         |    0 |
+|  33 | TK_FIM_CASO      |    0 |
+|  34 | TK_PARA          |    0 |
+|  35 | TK_DE            |    0 |
+|  36 | TK_ATE           |    0 |
+|  37 | TK_PASSO         |    0 |
+|  38 | TK_FIM_PARA      |    0 |
+|  39 | TK_ENTRADA       |    0 |
+|  40 | TK_SAIDA         |    0 |
++-----+------------------+------+
+|   X | TOTAL            |    4 |
++-----+------------------+------+
+
+TOTAL DE ERROS: 2
+
