@@ -87,7 +87,7 @@ typedef struct
 typedef struct
 {
     tTokenEncontrado *tab;    
-    int tamAtual;
+    size_t tamAtual;
     size_t tamLimite;
 } tTabTokenEncontrados;
 

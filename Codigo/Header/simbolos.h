@@ -188,7 +188,7 @@ int addSimbNaTab (tToken tk, char * lex, int lin, int col)
     if(pos != -1)
     {
         alocarOcorNoSimb (ultimoSimbolo, lin, col);
-        return -1;
+        return pos;
     }
     else
     {
@@ -202,6 +202,8 @@ int addSimbNaTab (tToken tk, char * lex, int lin, int col)
             novoSimb->lex_int = atoi(lex);
         else if(tk == TK_DEC)
             novoSimb->lex_dec = atof(lex);
+
+        novoSimb->tk = tk;
 
         alocarOcorNoSimb(novoSimb, lin, col);
         novoSimb->prox = NULL;

@@ -1,0 +1,20 @@
+LISTA DE ERROS LEXICOS EM "teste.ptg"
+
+[   1] /* Ex-01-incorreto.ptg */
+[   2] 
+[   3] programa
+[   4]   inteiro: @n√∫mero, r;
+      ------------^
+    Erro lexico na linha 4 coluna 12: Caractere Invalido '@'
+[   4]   inteiro: @n√∫mero, r;
+      --------------^
+    Erro lexico na linha 4 coluna 14: Caractere Invalido '∫'
+[   5]   saida ("Digite um nro:");
+[   6]   entrada (numero);
+[   7]   r := raiz (n√∫mero);
+      ---------------^
+    Erro lexico na linha 7 coluna 15: Caractere Invalido '∫'
+[   8]   saida(r);
+[   9] fim_programa
+
+TOTAL DE ERROS: 3

@@ -19,8 +19,9 @@
 *-----------------------------------------------------------------------
 */
 
-void salvarArquivoTks (char *, int, int);
+void salvarArquivoTks (char *, int);
 void salvarArquivoTabSimb (char *, int);
+void salvarArquivoErr (char *);
 
 /*
 *-----------------------------------------------------------------------
@@ -28,7 +29,7 @@ void salvarArquivoTabSimb (char *, int);
 *-----------------------------------------------------------------------
 */
 
-void salvarArquivoTks (char *nomeArq, int tamMaiorLex, int totalErros)
+void salvarArquivoTks (char *nomeArq, int tamMaiorLex)
 {
     int i;
     int linhaAtual = -1;
@@ -104,7 +105,7 @@ void salvarArquivoTks (char *nomeArq, int tamMaiorLex, int totalErros)
     fprintf(arq, "|   X | TOTAL            | %4d |\n", totalTkOcor);
     fprintf(arq, "+-----+------------------+------+\n\n");
 
-    fprintf(arq, "TOTAL DE ERROS: %d\n\n", totalErros);
+    fprintf(arq, "TOTAL DE ERROS: %lu\n\n", tabela_erros_lexicos.tamAtual);
 
     free(nomeArqTk);
     fclose(arq);
@@ -113,31 +114,29 @@ void salvarArquivoTks (char *nomeArq, int tamMaiorLex, int totalErros)
 void salvarArquivoTabSimb (char *nomeArq, int tamMaiorLex)
 {
     int  i;
+    int j;
+    int qtdeOcorAtual = 0;
     int maiorEspOcor = (maiorQtdeOcorSimb * 10) < 30 ? 30 : maiorQtdeOcorSimb * 10;
     tSimbolo *simbAtual = NULL;
-    char *nomeArqTk = (char *) malloc((strlen(nomeArq) + 5) * sizeof(char));
-    if(nomeArqTk == NULL)
+    tPos *ocorAtual = NULL;
+    char *nomeArqTab = (char *) malloc((strlen(nomeArq) + 5) * sizeof(char));
+    if(nomeArqTab == NULL)
     {
         printf("Erro ao salvar arquivo de tabela de simbolos\n");
         exit(-1);
     }
-    int subTotalTkOcor[41] = {0};
-    int totalTkOcor = 0;
 
-    strcpy(nomeArqTk, nomeArq);
-    strcat(nomeArqTk, ".tbl");
+    strcpy(nomeArqTab, nomeArq);
+    strcat(nomeArqTab, ".tbl");
 
-    FILE *arq = fopen(nomeArqTk, "w");
+    FILE *arq = fopen(nomeArqTab, "w");
     if(arq == NULL)
     {
         printf("Erro ao salvar arquivo de tabela de simbolos\n");
         exit(-1);
     }
 
-
-
     fprintf(arq, "TABELA DE SIMBOLOS - \"%s\"\n\n", nomeArq);
-
     fprintf(arq, "+-----+------------------+");
     for (i = 0; i < tamMaiorLex + 2; i++)
         fprintf(arq, "-");
@@ -154,9 +153,131 @@ void salvarArquivoTabSimb (char *nomeArq, int tamMaiorLex)
         fprintf(arq, "-");
     fprintf(arq, "+\n");
 
+    for (i = 0; i < TAM_TAB_SIMB; i++)
+    {
+        simbAtual = tabela_simbolos[i];
+        while(simbAtual != NULL)
+        {
+            fprintf(arq, "| %3d | %-16s | %-*s | ", i, tokenGetText(simbAtual->tk), tamMaiorLex, simbAtual->lex_char);
+            ocorAtual = simbAtual->ocor;
+            while(ocorAtual != NULL)
+            {
+                fprintf(arq, "(%3d,%3d) ", ocorAtual->lin, ocorAtual->col);
+                ocorAtual = ocorAtual->prox;
+                qtdeOcorAtual++;
+            }
+            for(j = 0; j < (maiorEspOcor - (qtdeOcorAtual * 10)); j++)
+                fprintf(arq, " ");
+            fprintf(arq, "|\n");
+            simbAtual = simbAtual->prox;
+            qtdeOcorAtual = 0;
+        }
+    }
+    fprintf(arq, "+-----+------------------+");
+    for (i = 0; i < tamMaiorLex + 2; i++)
+        fprintf(arq, "-");
+    fprintf(arq, "+");
+    for (i = 0; i < maiorEspOcor + 1; i++)
+        fprintf(arq, "-");
+    fprintf(arq, "+\n");
 
+    free(nomeArqTab);
+    fclose(arq);
 
 }
 
+void salvarArquivoErr (char *nomeArq)
+{
+    int i;
+    int errosLidos = 0;
+    int qtdeErrosNaLinha = 0;
+    int nmrLinhaAtual = 1;
+    size_t tamLinhaAtual = 0;
+    char simbAtual;
+    char *nomeArqErr = (char *) malloc((strlen(nomeArq) + 5) * sizeof(char));
+    if(nomeArqErr == NULL)
+    {
+        printf("Erro ao salvar arquivo de erro\n");
+        exit(-1);
+    }
+
+    strcpy(nomeArqErr, nomeArq);
+    strcat(nomeArqErr, ".err");
+
+    FILE *arqOut = fopen(nomeArqErr, "w");
+    FILE *arqIn = fopen(nomeArq, "r");
+    if(arqOut == NULL || arqIn == NULL)
+    {
+        printf("Erro ao salvar arquivo de erro\n");
+        exit(-1);
+    }
+
+    fprintf(arqOut, "LISTA DE ERROS LEXICOS EM \"%s\"\n\n", nomeArq);
+
+    while(!feof(arqIn))
+    {
+        simbAtual = fgetc(arqIn);
+        if(simbAtual != EOF)
+        {
+            fprintf(arqOut, "[%4d] ", nmrLinhaAtual);
+            tamLinhaAtual++;
+            
+            while(simbAtual != '\n' && simbAtual != EOF)
+            {
+                fprintf(arqOut, "%c", simbAtual);
+                simbAtual = fgetc(arqIn);
+                tamLinhaAtual++;
+            }
+
+            qtdeErrosNaLinha = verificaErroNaLinha(nmrLinhaAtual);
+
+            if(qtdeErrosNaLinha == 1)
+            {
+                fprintf(arqOut, "\n%6s", "");
+                for (i = 0; i < tabela_erros_lexicos.tab[errosLidos].col; i++)
+                    fprintf(arqOut, "-");
+                fprintf(arqOut, "^\n");
+                fprintf(arqOut, "%4sErro lexico na linha %d coluna %d: %s '%c'", "", tabela_erros_lexicos.tab[errosLidos].lin, tabela_erros_lexicos.tab[errosLidos].col, erroGetText(tabela_erros_lexicos.tab[errosLidos].err), tabela_erros_lexicos.tab[errosLidos].simb);
+                errosLidos++;
+            }
+            else if (qtdeErrosNaLinha > 1)
+            {
+                fprintf(arqOut, "\n%6s", "");
+                for (i = 0; i < tabela_erros_lexicos.tab[errosLidos].col; i++)
+                    fprintf(arqOut, "-");
+                fprintf(arqOut, "^\n");
+                fprintf(arqOut, "%4sErro lexico na linha %d coluna %d: %s '%c'", "", tabela_erros_lexicos.tab[errosLidos].lin, tabela_erros_lexicos.tab[errosLidos].col, erroGetText(tabela_erros_lexicos.tab[errosLidos].err), tabela_erros_lexicos.tab[errosLidos].simb);
+                errosLidos++;
+                for(i = 0; i < qtdeErrosNaLinha; i++)
+                {
+                    fseek(arqIn, -tamLinhaAtual, SEEK_CUR);
+                    simbAtual = fgetc(arqIn);
+                    fprintf(arqOut, "\n[%4d] ", nmrLinhaAtual);
+                    while(simbAtual != '\n' && simbAtual != EOF)
+                    {
+                        fprintf(arqOut, "%c", simbAtual);
+                        simbAtual = fgetc(arqIn);
+                    }
+                    fprintf(arqOut, "\n%6s", "");
+                    for (i = 0; i < tabela_erros_lexicos.tab[errosLidos].col; i++)
+                        fprintf(arqOut, "-");
+                    fprintf(arqOut, "^\n");
+                    fprintf(arqOut, "%4sErro lexico na linha %d coluna %d: %s '%c'", "", tabela_erros_lexicos.tab[errosLidos].lin, tabela_erros_lexicos.tab[errosLidos].col, erroGetText(tabela_erros_lexicos.tab[errosLidos].err), tabela_erros_lexicos.tab[errosLidos].simb);
+                    errosLidos++;
+                }
+            }
+            
+            fprintf(arqOut, "\n");
+            nmrLinhaAtual++;
+            tamLinhaAtual = 0;
+        }
+    }
+
+    fprintf(arqOut, "\nTOTAL DE ERROS: %lu\n", tabela_erros_lexicos.tamAtual);
+    free(nomeArqErr);
+    fclose(arqIn);
+    fclose(arqOut);
+
+}
 
 #endif

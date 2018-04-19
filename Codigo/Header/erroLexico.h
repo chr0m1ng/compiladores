@@ -39,7 +39,7 @@ typedef enum {
 //Tipo Ocorrencia de Erros
 typedef struct {
     tErro err;
-    char *simb;
+    char simb;
     int lin;
     int col;
 } tOcorErro;
@@ -60,7 +60,8 @@ tTabErroLexico tabela_erros_lexicos;
 */
 void alocarTabErrLex (void);
 char * erroGetText (tErro);
-void addErrNaTab (tErro, char *, int, int);
+void addErrNaTab (tErro, char, int, int);
+int verificaErroNaLinha(int);
 void liberarTabErrLex (void);
 
 /*
@@ -98,7 +99,7 @@ char * erroGetText (tErro err)
 }
 
 /* Adiciona novo erro encontrado na tabela de erros lexicos, caso já esteja cheia, realoca mais espaço */
-void addErrNaTab (tErro err, char *simb, int lin, int col)
+void addErrNaTab (tErro err, char simb, int lin, int col)
 {
     if(tabela_erros_lexicos.tamAtual + 1 == tabela_erros_lexicos.tamLimite)
     {
@@ -121,6 +122,21 @@ void addErrNaTab (tErro err, char *simb, int lin, int col)
 void liberarTabErrLex (void)
 {
     free(tabela_erros_lexicos.tab);
+}
+
+/* Verifica se tem erro na linha passada. Caso sim devolve a quantidade, caso não devolve 0 */
+int verificaErroNaLinha(int linha)
+{
+    int qtdeErros = 0;
+    int i;
+    for(i = 0; i < tabela_erros_lexicos.tamAtual; i++)
+    {
+        if(tabela_erros_lexicos.tab[i].lin == linha)
+            qtdeErros++;
+        else if (tabela_erros_lexicos.tab[i].lin > linha)
+            return qtdeErros;
+    }
+    return qtdeErros;
 }
 
 #endif
