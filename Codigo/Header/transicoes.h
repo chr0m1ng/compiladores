@@ -58,11 +58,11 @@ typedef enum
 unsigned int tabela_transicao[TOTAL_ESTADOS][TAM_ALFABETO] = 
 {
 //   D | L | S | O | " | < | > | + | - | = | * | ; | , | : | ) | ( | / |EOF|\n |\b |. 
-    { 7,  2, 40, 40, 15, 25, 29, 34, 37, 32, 33, 19, 18, 20, 24, 23, 4, 1, 40, 40, 13}, // Q0
+    { 7,  2, 40, 40, 15, 25, 29, 34, 37, 32, 33, 19, 18, 20, 24, 23, 4, 1, 0, 0, 13}, // Q0
     { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, // Q1
-    { 2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3}, // Q2 
+    { 2,  2,  2,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3}, // Q2 
     { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, // Q3
-    { 5,  5,  5,  5,  5,  5,  5,  5,  5,  5, 41,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5}, // Q4
+    { 5,  5,  5,  5,  5,  5,  5,  5,  5,  5, 41,  5,  5,  5,  5,  5,  6,  5,  5,  5,  5}, // Q4
     { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, // Q5
     { 6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  1,  0,  6,  6}, // Q6
     { 7,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  10}, // Q7
@@ -110,7 +110,7 @@ unsigned int tabela_transicao[TOTAL_ESTADOS][TAM_ALFABETO] =
 *-----------------------------------------------------------------------
 */
 
-tAlfabeto charToAlfabeto (char *lex);
+tAlfabeto charToAlfabeto (char*);
 
 /*
 *-----------------------------------------------------------------------
@@ -121,9 +121,6 @@ tAlfabeto charToAlfabeto (char *lex);
 /* Converte um caractere em um tipo Alfabeto */
 tAlfabeto charToAlfabeto (char *lex)
 {
-    if (isalpha(*lex))	return c_letra;
-	if (isdigit(*lex))	return c_digito;
-	if (isspace(*lex))	return c_branco;
     switch (*lex)
     {
         case '.' :  return c_pt;
@@ -144,6 +141,12 @@ tAlfabeto charToAlfabeto (char *lex)
         case EOF :  return c_EOF;
         case '\n':  return c_barra_n;
         default:
+            if (isalpha(*lex))	
+                return c_letra;
+            if (isdigit(*lex))	
+                return c_digito;
+            if (isspace(*lex))	
+                return c_branco;
             return c_outro;
     }
 

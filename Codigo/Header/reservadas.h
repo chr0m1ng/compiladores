@@ -74,7 +74,7 @@ tToken isPalavraReservada (char * lex)
     }
     lexUP[i] = '\0';
 
-    for(i = 0; i < TOTAL_PALAVRAS_RESERVADAS; i++)
+    for(i = 0; i < TOTAL_PALAVRAS_RESERVADAS + 1; i++)
     {
         if(!strcmp(lexUP, palavras_reservadas[i]))
         {

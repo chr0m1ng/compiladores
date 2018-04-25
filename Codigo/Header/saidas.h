@@ -12,6 +12,7 @@
 #include "tokens.h"
 #include "simbolos.h"
 #include "erroLexico.h"
+#include "analisadorLexico.h"
 
 /*
 *-----------------------------------------------------------------------
@@ -19,8 +20,8 @@
 *-----------------------------------------------------------------------
 */
 
-void salvarArquivoTks (char *, int);
-void salvarArquivoTabSimb (char *, int);
+void salvarArquivoTks (char *);
+void salvarArquivoTabSimb (char *);
 void salvarArquivoErr (char *);
 
 /*
@@ -29,7 +30,7 @@ void salvarArquivoErr (char *);
 *-----------------------------------------------------------------------
 */
 
-void salvarArquivoTks (char *nomeArq, int tamMaiorLex)
+void salvarArquivoTks (char *nomeArq)
 {
     int i;
     int linhaAtual = -1;
@@ -111,7 +112,7 @@ void salvarArquivoTks (char *nomeArq, int tamMaiorLex)
     fclose(arq);
 }
 
-void salvarArquivoTabSimb (char *nomeArq, int tamMaiorLex)
+void salvarArquivoTabSimb (char *nomeArq)
 {
     int  i;
     int j;
@@ -236,7 +237,7 @@ void salvarArquivoErr (char *nomeArq)
                 fprintf(arqOut, "\n%6s", "");
                 for (i = 0; i < tabela_erros_lexicos.tab[errosLidos].col; i++)
                     fprintf(arqOut, "-");
-                fprintf(arqOut, "^\n");
+                fprintf(arqOut, "-^\n");
                 fprintf(arqOut, "%4sErro lexico na linha %d coluna %d: %s '%c'", "", tabela_erros_lexicos.tab[errosLidos].lin, tabela_erros_lexicos.tab[errosLidos].col, erroGetText(tabela_erros_lexicos.tab[errosLidos].err), tabela_erros_lexicos.tab[errosLidos].simb);
                 errosLidos++;
             }
@@ -245,7 +246,7 @@ void salvarArquivoErr (char *nomeArq)
                 fprintf(arqOut, "\n%6s", "");
                 for (i = 0; i < tabela_erros_lexicos.tab[errosLidos].col; i++)
                     fprintf(arqOut, "-");
-                fprintf(arqOut, "^\n");
+                fprintf(arqOut, "-^\n");
                 fprintf(arqOut, "%4sErro lexico na linha %d coluna %d: %s '%c'", "", tabela_erros_lexicos.tab[errosLidos].lin, tabela_erros_lexicos.tab[errosLidos].col, erroGetText(tabela_erros_lexicos.tab[errosLidos].err), tabela_erros_lexicos.tab[errosLidos].simb);
                 errosLidos++;
                 for(i = 0; i < qtdeErrosNaLinha; i++)
@@ -261,7 +262,7 @@ void salvarArquivoErr (char *nomeArq)
                     fprintf(arqOut, "\n%6s", "");
                     for (i = 0; i < tabela_erros_lexicos.tab[errosLidos].col; i++)
                         fprintf(arqOut, "-");
-                    fprintf(arqOut, "^\n");
+                    fprintf(arqOut, "-^\n");
                     fprintf(arqOut, "%4sErro lexico na linha %d coluna %d: %s '%c'", "", tabela_erros_lexicos.tab[errosLidos].lin, tabela_erros_lexicos.tab[errosLidos].col, erroGetText(tabela_erros_lexicos.tab[errosLidos].err), tabela_erros_lexicos.tab[errosLidos].simb);
                     errosLidos++;
                 }

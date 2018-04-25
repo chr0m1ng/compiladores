@@ -1,20 +1,22 @@
 LISTA DE ERROS LEXICOS EM "teste.ptg"
 
-[   1] /* Ex-01-incorreto.ptg */
-[   2] 
-[   3] programa
-[   4]   inteiro: @n√∫mero, r;
+[   1] 
+[   2] programa
+[   3]   inteiro: @n√∫mero, r;
       ------------^
-    Erro lexico na linha 4 coluna 12: Caractere Invalido '@'
-[   4]   inteiro: @n√∫mero, r;
+    Erro lexico na linha 3 coluna 11: Caractere Invalido '@'
+[   3]   inteiro: @n√∫mero, r;
       --------------^
-    Erro lexico na linha 4 coluna 14: Caractere Invalido '∫'
-[   5]   saida ("Digite um nro:");
-[   6]   entrada (numero);
+    Erro lexico na linha 3 coluna 13: Caractere Invalido '√'
+[   4]   saida ("Digite um nro:");
+[   5]   entrada (numero);
+[   6] /* Ex-01-incorreto.ptg
+      -^
+    Erro lexico na linha 6 coluna 0: Comentario de Bloco N√£o Fechado '/'
 [   7]   r := raiz (n√∫mero);
       ---------------^
-    Erro lexico na linha 7 coluna 15: Caractere Invalido '∫'
+    Erro lexico na linha 7 coluna 14: Caractere Invalido '√'
 [   8]   saida(r);
 [   9] fim_programa
 
-TOTAL DE ERROS: 3
+TOTAL DE ERROS: 4

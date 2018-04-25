@@ -139,4 +139,14 @@ int verificaErroNaLinha(int linha)
     return qtdeErros;
 }
 
+
+void printarErros()
+{
+    int i;
+    printf("ERROS LEXICOS\n");
+    for(i = 0; i < tabela_erros_lexicos.tamAtual; i++)
+        printf("[%d] tipo = %s char = %c lin = %d col = %d\n", i,  erroGetText(tabela_erros_lexicos.tab[i].err), tabela_erros_lexicos.tab[i].simb, tabela_erros_lexicos.tab[i].lin, tabela_erros_lexicos.tab[i].col);
+    printf("\n");
+}
+
 #endif

@@ -1,9 +1,9 @@
-/* Ex-01-incorreto.ptg */
 
 programa
   inteiro: @número, r;
   saida ("Digite um nro:");
   entrada (numero);
+/* Ex-01-incorreto.ptg
   r := raiz (número);
   saida(r);
 fim_programa

@@ -34,6 +34,7 @@ typedef struct {
 } tLexema;
 
 tLexema lexema_atual;
+int tamMaiorLex; 
 
 /*
 *-----------------------------------------------------------------------
@@ -44,7 +45,6 @@ tLexema lexema_atual;
 void alocarLexema (void);
 void addCharNoLexema (char);
 void zerarLexema (void);
-char * encontraLexNaTabSimb (int, int, int);
 void liberarLexema (void);
 
 /*
@@ -65,6 +65,7 @@ void alocarLexema (void)
         printf("Erro ao alocar espaco para o lexema");
         exit(-1);
     }
+    tamMaiorLex = 0;
 }
 
 /* Adiciona caractere ao lexema, caso não haja mais espaço na variavel, tenta aloca mais */
@@ -83,6 +84,8 @@ void addCharNoLexema (char c)
     lexema_atual.lex[lexema_atual.tamAtual] = c;
     lexema_atual.lex[lexema_atual.tamAtual + 1] = '\0';
     lexema_atual.tamAtual++;
+    if(lexema_atual.tamAtual > tamMaiorLex)
+        tamMaiorLex = lexema_atual.tamAtual;
 }
 
 /* Zera valores armazenados no lexema_atual */
@@ -91,6 +94,7 @@ void zerarLexema (void)
     lexema_atual.lex[0] = '\0';
     lexema_atual.tamAtual = 0;
 }
+
 
 /* Libera espaço alocado para o lexema na memória */
 void liberarLexema (void)

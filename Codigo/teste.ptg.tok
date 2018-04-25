@@ -1,42 +1,42 @@
 LISTA DE TOKENS RECONHECIDOS EM "teste.ptg.tok"
 
-+-----+-----+-----+------------------+----------------+----------------+
-| LIN | COL | COD | TOKEN            | LEXEMA         |  POS TAB SIMB  |
-+-----+-----+-----+------------------+----------------+----------------+
-|   3 |   1 |  26 | TK_PROGRAMA      |                |                |
-|   4 |   3 |  28 | TK_INTEIRO       |                |                |
-|     |  10 |   7 | TK_DOIS_PTS      |                |                |
-|     |  13 |   1 | TK_IDEN          | n              |       102      |
-|     |  15 |   1 | TK_IDEN          | mero           |        35      |
-|     |  19 |   5 | TK_VIRG          |                |                |
-|     |  21 |   1 | TK_IDEN          | r              |        71      |
-|     |  22 |   6 | TK_PT_VIRG       |                |                |
-|   5 |   3 |  40 | TK_SAIDA         |                |                |
-|     |   9 |   8 | TK_ABRE_PAR      |                |                |
-|     |  10 |   4 | TK_CADEIA        | Digite um nro: |        84      |
-|     |  26 |   9 | TK_FECHA_PAR     |                |                |
-|     |  27 |   6 | TK_PT_VIRG       |                |                |
-|   6 |   3 |  39 | TK_ENTRADA       |                |                |
-|     |  11 |   8 | TK_ABRE_PAR      |                |                |
-|     |  12 |   1 | TK_IDEN          | numero         |        48      |
-|     |  18 |   9 | TK_FECHA_PAR     |                |                |
-|     |  19 |   6 | TK_PT_VIRG       |                |                |
-|   7 |   3 |   1 | TK_IDEN          | r              |        71      |
-|     |   5 |  18 | TK_ATRIB         |                |                |
-|     |   8 |   1 | TK_IDEN          | raiz           |        19      |
-|     |  13 |   8 | TK_ABRE_PAR      |                |                |
-|     |  14 |   1 | TK_IDEN          | n              |       102      |
-|     |  15 |   1 | TK_IDEN          | mero           |        35      |
-|     |  20 |   9 | TK_FECHA_PAR     |                |                |
-|     |  21 |   6 | TK_PT_VIRG       |                |                |
-|   8 |   3 |  40 | TK_SAIDA         |                |                |
-|     |   8 |   8 | TK_ABRE_PAR      |                |                |
-|     |   9 |   1 | TK_IDEN          | r              |        71      |
-|     |  10 |   9 | TK_FECHA_PAR     |                |                |
-|     |  11 |   6 | TK_PT_VIRG       |                |                |
-|   9 |   1 |  27 | TK_FIM_PROGRAMA  |                |                |
-|  10 |   0 |   0 | TK_EOF           |                |                |
-+-----+-----+-----+------------------+----------------+----------------+
++-----+-----+-----+------------------+------------------+----------------+
+| LIN | COL | COD | TOKEN            | LEXEMA           |  POS TAB SIMB  |
++-----+-----+-----+------------------+------------------+----------------+
+|   2 |   0 |  26 | TK_PROGRAMA      |                  |                |
+|   3 |   2 |  28 | TK_INTEIRO       |                  |                |
+|     |   9 |   7 | TK_DOIS_PTS      |                  |                |
+|     |  12 |   1 | TK_IDEN          | n                |       102      |
+|     |  15 |   1 | TK_IDEN          | mero             |        35      |
+|     |  19 |   5 | TK_VIRG          |                  |                |
+|     |  21 |   1 | TK_IDEN          | r                |        71      |
+|     |  22 |   6 | TK_PT_VIRG       |                  |                |
+|   4 |   2 |  40 | TK_SAIDA         |                  |                |
+|     |   8 |   8 | TK_ABRE_PAR      |                  |                |
+|     |   9 |   4 | TK_CADEIA        | "Digite um nro:" |        77      |
+|     |  25 |   9 | TK_FECHA_PAR     |                  |                |
+|     |  26 |   6 | TK_PT_VIRG       |                  |                |
+|   5 |   2 |  39 | TK_ENTRADA       |                  |                |
+|     |  10 |   8 | TK_ABRE_PAR      |                  |                |
+|     |  11 |   1 | TK_IDEN          | numero           |        48      |
+|     |  17 |   9 | TK_FECHA_PAR     |                  |                |
+|     |  18 |   6 | TK_PT_VIRG       |                  |                |
+|   7 |   2 |   1 | TK_IDEN          | r                |        71      |
+|     |   4 |  18 | TK_ATRIB         |                  |                |
+|     |   7 |   1 | TK_IDEN          | raiz             |        19      |
+|     |  12 |   8 | TK_ABRE_PAR      |                  |                |
+|     |  13 |   1 | TK_IDEN          | n                |       102      |
+|     |  16 |   1 | TK_IDEN          | mero             |        35      |
+|     |  20 |   9 | TK_FECHA_PAR     |                  |                |
+|     |  21 |   6 | TK_PT_VIRG       |                  |                |
+|   8 |   2 |  40 | TK_SAIDA         |                  |                |
+|     |   7 |   8 | TK_ABRE_PAR      |                  |                |
+|     |   8 |   1 | TK_IDEN          | r                |        71      |
+|     |   9 |   9 | TK_FECHA_PAR     |                  |                |
+|     |  10 |   6 | TK_PT_VIRG       |                  |                |
+|   9 |   0 |  27 | TK_FIM_PROGRAMA  |                  |                |
+|  10 |   0 |   0 | TK_EOF           |                  |                |
++-----+-----+-----+------------------+------------------+----------------+
 
 
 RESUMO
@@ -89,5 +89,5 @@ RESUMO
 |   X | TOTAL            |   33 |
 +-----+------------------+------+
 
-TOTAL DE ERROS: 3
+TOTAL DE ERROS: 4
 
